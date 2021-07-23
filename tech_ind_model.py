@@ -13,7 +13,7 @@ from util import csv_to_dataset, history_points
 
 # dataset
 data = input("Enter the ticker")
-ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset(data + ".csv")
+ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset(data)
 
 test_split = 0.9
 n = int(ohlcv_histories.shape[0] * test_split)

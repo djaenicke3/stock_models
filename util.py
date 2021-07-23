@@ -1,15 +1,47 @@
 import pandas as pd
 from sklearn import preprocessing
 import numpy as np
+import requests
+API_URL = "https://www.alphavantage.co/query"
+apikey = "I92EXE4UX0377113"
+
+
+
+
+
+
+
 
 history_points = 50
 
 
-def csv_to_dataset(csv_path):
-    data = pd.read_csv(csv_path)
-    data = data.drop('Date', axis=1)
-    data = data.drop('Volume', axis=1)
+def csv_to_dataset(company):
+
+    data = {"function": "TIME_SERIES_DAILY_ADJUSTED",
+                    "symbol": company,
+                    "outputsize": "full",
+                    "datatype": "json",
+                    "apikey": apikey}
+
+
+    response = requests.get(API_URL,
+                                    data)
+    response_json = response.json()
+    data = pd.DataFrame.from_dict(response_json['Time Series (Daily)'], orient='index')
+    data = data.reset_index()
+    data = data[0:751]
+    data = data.iloc[::-1]
+
+    data = data.drop('index', axis=1)
+    data = data.drop('6. volume', axis=1)
+    data = data.drop('7. dividend amount', axis=1)
+    data = data.drop('8. split coefficient', axis=1)
     data = data.drop(0, axis=0)
+    data = data.apply(pd.to_numeric)
+
+
+    # data = pd.DataFrame.from_dict(response_json['Time Series (Daily)'], orient='index')
+    # data = data.reset_index()
 
     data = data.values
     train_split = len(data) - int(len(data) / 10)
