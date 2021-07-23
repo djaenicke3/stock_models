@@ -1,6 +1,12 @@
 import pandas as pd
 
 df = pd.read_csv("Results.csv")
+# data = data.drop('Date', axis=1)
+# data = data.drop('Volume', axis=1)
+# data = data.drop(0, axis=0)
+#
+# train_split =len(data.values) -int(len(data.values)/10)
+# print(data.values[:675])
 
 Real_val = [i for i in df["Real_values"]]
 Pred_val = [i for i in df["predicted_value"]]

@@ -69,10 +69,13 @@ y_test_predicted = model.predict([ohlcv_test, tech_ind_test])
 y_test_predicted = y_normaliser.inverse_transform(y_test_predicted)
 y_predicted = model.predict([ohlcv_histories, technical_indicators])
 y_predicted = y_normaliser.inverse_transform(y_predicted)
-assert unscaled_y_test.shape == y_test_predicted.shape
+#assert unscaled_y_test.shape == y_test_predicted.shape
 real_mse = np.mean(np.square(unscaled_y_test - y_test_predicted))
 scaled_mse = real_mse / (np.max(unscaled_y_test) - np.min(unscaled_y_test)) * 100
 print(scaled_mse)
+print(ohlcv_histories)
+print("######")
+print(technical_indicators)
 
 import matplotlib.pyplot as plt
 
