@@ -111,3 +111,58 @@ def multiple_csv_to_dataset(test_set_name):
     ohlcv_test, tech_ind_test, y_test, unscaled_y_test, y_normaliser = csv_to_dataset(test_set_name)
 
     return ohlcv_train, tech_ind_train, y_train, ohlcv_test, tech_ind_test, y_test, unscaled_y_test, y_normaliser
+
+def compute_earnings(Real_val, Pred_val):
+    purchase_amt = 2000
+    stock = 0
+    balance = 0
+    stock = 2000/Real_val[0]
+    profit = 0
+
+    for i in range(1,len(Real_val)):
+        if balance > 2000:
+            profit += balance -2000
+
+        if (Pred_val[i] > Pred_val[i - 1]):
+            balance+= stock*Real_val[i]
+            stock = 0
+        elif  (Pred_val[i] < Pred_val[i - 1]):
+            stock = balance/Real_val[i]
+            balance -= stock*Real_val[i]
+    return profit, balance,stock
+
+def buy_hold(Real_val, Pred_val):
+    purchase = 2000/Real_val[0]
+    sell = purchase * Real_val[-1]
+    return sell -2000
+
+    # while len(buys_) > 0 and len(sells_) > 0:
+    #     if buys_[0][0] < sells_[0][0]:
+    #         # time to buy $10 worth of stock
+    #         balance -= purchase_amt
+    #         stock += purchase_amt / buys_[0][1]
+    #         buys_.pop(0)
+    #     else:
+    #         # time to sell all of our stock
+    #         balance += stock * sells_[0][1]
+    #         stock = 0
+    #         sells_.pop(0)
+    #print(f"earnings: ${balance}")
+
+def Bull_twok(Real_val, Pred_val):
+    purchase_amt = 2000
+    stock = 0
+    balance = 0
+
+    profit = 0
+
+    for i in range(1,len(Real_val)):
+        if balance > 2000:
+            profit += balance -2000
+
+        if (Pred_val[i] > Pred_val[i - 1]):
+            balance+= stock*Real_val[i]
+            stock = 0
+        if  (Pred_val[i] < Pred_val[i - 1]):
+            stock = balance/Real_val[i]
+            balance -= stock*R

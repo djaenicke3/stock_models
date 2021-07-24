@@ -8,7 +8,7 @@ import numpy as np
 np.random.seed(4)
 # from tensorflow import set_random_seed
 # set_random_seed(4)
-from util import csv_to_dataset, history_points
+from util import csv_to_dataset, history_points, compute_earnings, buy_hold
 
 
 # dataset
@@ -86,7 +86,7 @@ end = -1
 
 real = plt.plot(unscaled_y_test[start:end], label='real')
 pred = plt.plot(y_test_predicted[start:end], label='predicted')
-
+print(buy_hold(unscaled_y_test,y_test_predicted))
 Df = pd.DataFrame(unscaled_y_test , columns=["Real_values"])
 Df["predicted_value"] = y_test_predicted
 Df.to_csv("Results.csv")
