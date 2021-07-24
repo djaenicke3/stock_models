@@ -176,17 +176,22 @@ def Bull_twok_csv(Real_val, Pred_val):
 
 
     for i in range(1, len(Real_val)):
-
-        if (Pred_val[i] > Pred_val[i - 1]) and (Real_val[i] > Real_val[i - 1]):
-            right_wrong.append("Right")
-        if (Pred_val[i] < Pred_val[i - 1]) and (Real_val[i] < Real_val[i - 1]):
-            right_wrong.append(("Right"))
-        else:
-            right_wrong.append("Wrong")
+        #
+        # if (Real_val[i]> Real_val[i-1]) and (Pred_val[i]>Pred_val[i-1]):
+        #     right_wrong.append("Right")
+        # if (Real_val[i]< Real_val[i-1]) and (Pred_val[i]<Pred_val[i-1]):
+        #     right_wrong.append(("Right"))
+        # else:
+        #     right_wrong.append("Wrong")
         prev_share = balance/Real_val[i-1]
         profit = prev_share*Real_val[i]
         amount.append((profit))
         earning.append(profit -balance)
+
+        if earning[i-1] > 0:
+            right_wrong.append("Right")
+        else:
+            right_wrong.append("Wrong")
 
 
     for i in range(len(earning)):

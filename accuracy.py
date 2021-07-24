@@ -19,7 +19,7 @@ for i in range(1,len(Real_val)):
         correct+=1
     if (Real_val[i]< Real_val[i-1]) and (Pred_val[i]<Pred_val[i-1]):
         correct+=1
-
+print(correct)
 accuracy = (correct/total)*100
 print(accuracy)
 print(Bull_twok(Real_val,Pred_val))
