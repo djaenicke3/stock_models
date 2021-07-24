@@ -112,24 +112,23 @@ def multiple_csv_to_dataset(test_set_name):
 
     return ohlcv_train, tech_ind_train, y_train, ohlcv_test, tech_ind_test, y_test, unscaled_y_test, y_normaliser
 
-def compute_earnings(Real_val, Pred_val):
-    purchase_amt = 2000
-    stock = 0
-    balance = 0
-    stock = 2000/Real_val[0]
-    profit = 0
-
-    for i in range(1,len(Real_val)):
-        if balance > 2000:
-            profit += balance -2000
-
-        if (Pred_val[i] > Pred_val[i - 1]):
-            balance+= stock*Real_val[i]
-            stock = 0
-        elif  (Pred_val[i] < Pred_val[i - 1]):
-            stock = balance/Real_val[i]
-            balance -= stock*Real_val[i]
-    return profit, balance,stock
+# def compute_earnings(Real_val, Pred_val):
+#
+#     purchase = 2000
+#     balance = 2000
+#     stock = purchase/Real_val[0]
+#
+#
+#     for i in range(1,len(Real_val)):
+#
+#
+#         if (Pred_val[i] > Pred_val[i - 1]):
+#             balance+= stock*Real_val[i]
+#             stock = 0
+#         if  (Pred_val[i] < Pred_val[i - 1]) and stock!=0:
+#             stock = balance/Real_val[i-1]
+#             balance -= stock*Real_val[i-1]
+#     return balance, stock
 
 def buy_hold(Real_val, Pred_val):
     purchase = 2000/Real_val[0]
@@ -150,19 +149,59 @@ def buy_hold(Real_val, Pred_val):
     #print(f"earnings: ${balance}")
 
 def Bull_twok(Real_val, Pred_val):
-    purchase_amt = 2000
-    stock = 0
-    balance = 0
+    balance = 2000
+    amount = []
+    earning = []
+    end_profit = 0
 
-    profit = 0
+    for i in range(1, len(Real_val)):
 
-    for i in range(1,len(Real_val)):
-        if balance > 2000:
-            profit += balance -2000
 
-        if (Pred_val[i] > Pred_val[i - 1]):
-            balance+= stock*Real_val[i]
-            stock = 0
-        if  (Pred_val[i] < Pred_val[i - 1]):
-            stock = balance/Real_val[i]
-            balance -= stock*R
+        prev_share = balance/Real_val[i-1]
+        profit = prev_share*Real_val[i]
+        amount.append((profit))
+        earning.append(profit -balance)
+        end_profit+=profit-balance
+
+
+    return end_profit #amount, earning, end_profit
+
+def Bull_twok_csv(Real_val, Pred_val):
+    balance = 2000
+    amount = []
+    earning = []
+    end_profit = []
+
+    right_wrong = []
+
+
+    for i in range(1, len(Real_val)):
+
+        if (Pred_val[i] > Pred_val[i - 1]) and (Real_val[i] > Real_val[i - 1]):
+            right_wrong.append("Right")
+        if (Pred_val[i] < Pred_val[i - 1]) and (Real_val[i] < Real_val[i - 1]):
+            right_wrong.append(("Right"))
+        else:
+            right_wrong.append("Wrong")
+        prev_share = balance/Real_val[i-1]
+        profit = prev_share*Real_val[i]
+        amount.append((profit))
+        earning.append(profit -balance)
+
+
+    for i in range(len(earning)):
+        if i == 0:
+            end_profit.append(earning[i])
+        if i != 0:
+            end_profit.append(earning[i] +end_profit[i-1])
+
+
+
+    df = pd.DataFrame(list(zip(Real_val[:],Pred_val[:],right_wrong,earning,end_profit)), columns=["Real_value","predicted_value","Predicted_price","money_gained_lost","Running_total"])
+
+
+
+
+    return  df
+
+
