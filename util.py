@@ -172,7 +172,7 @@ def Bull_twok_csv(Real_val, Pred_val):
     earning = []
     end_profit = []
 
-    right_wrong = []
+    right_wrong = ["Nill"]
 
 
     for i in range(1, len(Real_val)):
@@ -202,7 +202,7 @@ def Bull_twok_csv(Real_val, Pred_val):
 
 
 
-    df = pd.DataFrame(list(zip(Real_val[:],Pred_val[:],right_wrong,earning,end_profit)), columns=["Real_value","predicted_value","Predicted_price","money_gained_lost","Running_total"])
+    df = pd.DataFrame(list(zip(Real_val[1:],Pred_val[1:],right_wrong,earning,end_profit)), columns=["Real_value","predicted_value","Predicted_price","money_gained_lost","Running_total"])
 
 
 
