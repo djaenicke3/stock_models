@@ -25,5 +25,7 @@ print(accuracy)
 print(Bull_twok(Real_val,Pred_val))
 print(buy_hold(Real_val, Pred_val))
 #print(df.head())
+#
+# (Bull_twok_csv(Real_val, Pred_val)).to_csv("Danresults.csv")
 
-(Bull_twok_csv(Real_val, Pred_val)).to_csv("Danresults.csv")
+print(strategy_two(Real_val,Pred_val))
