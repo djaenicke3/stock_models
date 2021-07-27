@@ -224,7 +224,39 @@ def strategy_two(Real_val, Pred_val):
         total+=  balance -stock*Real_val[i-1]
         amount_total.append(total)
 
-    return sum(profit) ,total
+    df = pd.DataFrame(list(zip(Real_val[:], Pred_val[:],profit,amount_total)),
+                      columns=["Real_value", "predicted_value", "profit", "amount_total",
+        ])
+
+    return df
+
+
+### RSI strategy
+
+
+def RSI(df):
+
+    stockprices = df.iloc[::-1]
+    stockprices["return"] = np.log(stockprices["predicted_value"]/stockprices["predicted_value"].shift(1))
+    stockprices['movement'] = stockprices['predicted_value'] - stockprices['predicted_value'].shift(1)
+
+    stockprices['up'] = np.where((stockprices['movement'] > 0) ,stockprices['movement'],0)
+    stockprices['down'] = np.where((stockprices['movement'] < 0), stockprices['movement'], 0)
+
+    window_length = 14
+    up = stockprices['up'].rolling(window_length).mean()
+    down = stockprices['down'].abs().rolling(window_length).mean()
+    RS = up / down
+
+    RSI = 100.0 - (100.0 / (1.0 + RS))
+
+    RSI = RSI.rename("RSI")
+
+    return RSI
+
+
+
+
 
 
 
