@@ -228,7 +228,7 @@ def strategy_two(Real_val, Pred_val):
                       columns=["Real_value", "predicted_value", "profit", "amount_total",
         ])
 
-    return df
+    return amount_total[-1]
 
 
 ### RSI strategy
@@ -249,10 +249,20 @@ def RSI(df):
     RS = up / down
 
     RSI = 100.0 - (100.0 / (1.0 + RS))
+    profit = []
+    count = 0
 
     RSI = RSI.rename("RSI")
+    new = pd.merge(stockprices, RSI, left_index=True, right_index=True)
+    for i in range(1 ,len(new)):
+        if new["RSI"][i] == None:
+            continue
+        if new["RSI"][i-1]> 40:
+            profit.append(2000*new["Real_values"][i] - 2000*new["Real_values"][i-1])
+            count+=1
 
-    return RSI
+
+    return profit, count
 
 
 
