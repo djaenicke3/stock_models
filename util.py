@@ -228,41 +228,44 @@ def strategy_two(Real_val, Pred_val):
                       columns=["Real_value", "predicted_value", "profit", "amount_total",
         ])
 
-    return amount_total[-1]
+    return amount_total[-1] -2000
 
 
 ### RSI strategy
 
 
-def RSI(df):
-
-    stockprices = df.iloc[::-1]
-    stockprices["return"] = np.log(stockprices["predicted_value"]/stockprices["predicted_value"].shift(1))
-    stockprices['movement'] = stockprices['predicted_value'] - stockprices['predicted_value'].shift(1)
-
-    stockprices['up'] = np.where((stockprices['movement'] > 0) ,stockprices['movement'],0)
-    stockprices['down'] = np.where((stockprices['movement'] < 0), stockprices['movement'], 0)
-
-    window_length = 14
-    up = stockprices['up'].rolling(window_length).mean()
-    down = stockprices['down'].abs().rolling(window_length).mean()
-    RS = up / down
-
-    RSI = 100.0 - (100.0 / (1.0 + RS))
-    profit = []
-    count = 0
-
-    RSI = RSI.rename("RSI")
-    new = pd.merge(stockprices, RSI, left_index=True, right_index=True)
-    for i in range(1 ,len(new)):
-        if new["RSI"][i] == None:
-            continue
-        if new["RSI"][i-1]> 40:
-            profit.append(2000*new["Real_values"][i] - 2000*new["Real_values"][i-1])
-            count+=1
-
-
-    return profit, count
+# def RSI(df):
+#
+#     stockprices = df.iloc[::-1]
+#     stockprices["return"] = np.log(stockprices["predicted_value"]/stockprices["predicted_value"].shift(1))
+#     stockprices['movement'] = stockprices['predicted_value'] - stockprices['predicted_value'].shift(1)
+#
+#     stockprices['up'] = np.where((stockprices['movement'] > 0) ,stockprices['movement'],0)
+#     stockprices['down'] = np.where((stockprices['movement'] < 0), stockprices['movement'], 0)
+#
+#     window_length = 14
+#     up = stockprices['up'].rolling(window_length).mean()
+#     down = stockprices['down'].abs().rolling(window_length).mean()
+#     RS = up / down
+#
+#     RSI = 100.0 - (100.0 / (1.0 + RS))
+#     profit = 0
+#     count = 0
+#
+#     RSI = RSI.rename("RSI")
+#     new = pd.merge(stockprices, RSI, left_index=True, right_index=True)
+#     new = new.iloc[::-1]
+#     for i in range(1 ,len(new)):
+#         if new["RSI"][i] == None:
+#             continue
+#         if new["RSI"][i]> 70:
+#             stock = 2000/new["Real_values"][i-1]
+#             profit+=stock*new["Real_values"][i]
+#             count+=1
+#     profit /= count
+#
+#
+#     return profit, count
 
 
 
