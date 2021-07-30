@@ -33,4 +33,7 @@ df = pd.read_csv("Results.csv")
 
 # print(RSI(df))
 lst = ["AOS","AES"]
-print(predictions(lst))
+a ,b,c = predictions(lst)
+a.to_csv("buy_hold.csv")
+b.to_csv("rolling.csv")
+c.to_csv("reinvest.csv")

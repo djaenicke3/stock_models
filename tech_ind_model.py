@@ -17,6 +17,10 @@ from util import csv_to_dataset, history_points, Bull_twok, buy_hold, strategy_t
 def predictions(Tickers):
 
     final_dict = {}
+    Rolling = []
+    re_invest =  []
+    by_hold = []
+
     for i in Tickers:
         a = i
         ohlcv_histories, technical_indicators, next_day_open_values, unscaled_y, y_normaliser = csv_to_dataset(a)
@@ -119,11 +123,18 @@ def predictions(Tickers):
         s2 = strategy_two(Real_val,Pred_val)
 
         temp_dict = {"Rolling":s,"buy_hold":s1,"Reinvest":s2}
+        re_invest.append(s2)
+        by_hold.append(s1)
+        Rolling.append(s)
 
         final_dict[a]=temp_dict
 
+        df1 = pd.DataFrame(list(zip(Tickers,by_hold)),columns=["Tickers", "amount"])
+        df2 = pd.DataFrame(list(zip(Tickers,Rolling)), columns=["Tickers", "amount"])
+        df3 = pd.DataFrame(list(zip(Tickers, re_invest)), columns=["Tickers", "amount"])
 
-    return final_dict
+
+    return df1,df2,df3
 
 
 
