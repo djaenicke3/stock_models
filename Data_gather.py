@@ -24,7 +24,7 @@ def save_sp500_tickers():
     return tickers
 
 
-# save_sp500_tickers()
+save_sp500_tickers()
 def get_data_from_yahoo(reload_sp500=False):
     if reload_sp500:
         tickers = save_sp500_tickers()
