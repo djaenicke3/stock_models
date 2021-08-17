@@ -6,11 +6,6 @@ import pickle
 import requests
 import time
 
-# start = dt.datetime(2016, 1, 1)
-# end = dt.datetime.now()
-#
-# data = web.DataReader("ANTM", 'yahoo', start,end)
-# print(data)
 def save_sp500_tickers():
     resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
     soup = bs.BeautifulSoup(resp.text, 'lxml')
@@ -38,8 +33,7 @@ def get_data_from_yahoo(reload_sp500=False):
     start = dt.datetime(2016, 1, 1)
     end = dt.datetime.now()
     for ticker in tickers:
-        #print(ticker)
-        # just in case your connection breaks, we'd like to save our progress!
+
         if not os.path.exists('stock_dfs/{}.csv'.format(ticker)):
             print(type(ticker))
 
@@ -47,11 +41,7 @@ def get_data_from_yahoo(reload_sp500=False):
 
 
                 df = company(ticker[:-1])
-                #print(df)
-                # df.reset_index(inplace=True)
-                #
-                # df.set_index("Date", inplace=True)
-                # time.sleep(0.5)
+
                 print(df)
 
 
@@ -65,11 +55,7 @@ def get_data_from_yahoo(reload_sp500=False):
                 print("Ace")
                 continue
             #time.sleep(0.5)
-            # df.reset_index(inplace=True)
-            # df.set_index("Date", inplace=True)
-            # df = df.drop("Symbol", axis=1)
-            # print(len(df.head()))
-            # df.to_csv('stock_dfs/{}.csv'.format(ticker))
+
         else:
             print('Already have {}'.format(ticker))
 def company(ticker):
@@ -79,9 +65,5 @@ def company(ticker):
     df.reset_index(inplace=True)
     df.set_index("Date", inplace=True)
     return df
-# # print(company("MMM"))
-# tickers = save_sp500_tickers()
-# print(tickers[5][:-1])
-# tick = ["MMM"]
-#print(company(tick[0]))
+
 get_data_from_yahoo()

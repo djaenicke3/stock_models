@@ -11,8 +11,7 @@ np.random.seed(4)
 from util import csv_to_dataset, history_points, Bull_twok, buy_hold, strategy_two
 
 
-# dataset
-#data = ["TSLA","GOOG"]
+
 
 def predictions(Tickers):
 
@@ -37,9 +36,6 @@ def predictions(Tickers):
         y_test = next_day_open_values[n:]
 
         unscaled_y_test = unscaled_y[n:]
-
-#print(ohlcv_train.shape)
-#print(ohlcv_test.shape)
 
 
 # model architecture
@@ -82,22 +78,12 @@ def predictions(Tickers):
 #assert unscaled_y_test.shape == y_test_predicted.shape
         real_mse = np.mean(np.square(unscaled_y_test - y_test_predicted))
         scaled_mse = real_mse / (np.max(unscaled_y_test) - np.min(unscaled_y_test)) * 100
-#print(scaled_mse)
-#print(ohlcv_histories)
-#print("######")
-#print(technical_indicators)
 
-#import matplotlib.pyplot as plt
-
-#plt.gcf().set_size_inches(22, 15, forward=True)
 
         start = 0
         end = -1
 
-        #real = plt.plot(unscaled_y_test[start:end], label='real')
-        #pred = plt.plot(y_test_predicted[start:end], label='predicted')
-#print(buy_hold(unscaled_y_test,y_test_predicted))
-#print(Bull_twok(unscaled_y_test,y_test_predicted))
+
         Df = pd.DataFrame(unscaled_y_test , columns=["Real_values"])
         Df["predicted_value"] = y_test_predicted
 
