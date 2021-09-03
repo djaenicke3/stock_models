@@ -115,7 +115,7 @@ def multiple_csv_to_dataset(test_set_name):
 
 
 def buy_hold(Real_val, Pred_val):
-    purchase = 2000//Real_val[0]
+    purchase = 2000/Real_val[0]
     sell = purchase * Real_val[-1]
     return sell -2000
 
