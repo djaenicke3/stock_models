@@ -197,6 +197,14 @@ def strategy_two(Real_val, Pred_val):
 
     return amount_total[-1] -2000
 
+def new_strategy(real, pred):
+    profit = 0
+    for i in range(1, len(pred)):
+        if pred[i] > pred[i - 1]:
+            stock_price = 2000 / real[i - 1]
+            profit += stock_price * (real[i] - real[i - 1])
+    return profit
+
 
 ### RSI strategy
 

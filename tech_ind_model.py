@@ -8,7 +8,7 @@ import numpy as np
 np.random.seed(4)
 from tensorflow.python.framework.random_seed import set_random_seed
 set_random_seed(4)
-from util import csv_to_dataset, history_points, Bull_twok, buy_hold, strategy_two
+from util import csv_to_dataset, history_points, Bull_twok, buy_hold, strategy_two , new_strategy
 
 
 
@@ -19,6 +19,7 @@ def predictions(Tickers):
     Rolling = []
     re_invest =  []
     by_hold = []
+    New_strategy = []
 
     for i in Tickers:
         a = i
@@ -59,6 +60,7 @@ def predictions(Tickers):
         combined = concatenate([lstm_branch.output, technical_indicators_branch.output], name='concatenate')
 
         z = Dense(64, activation="sigmoid", name='dense_pooling')(combined)
+
         z = Dense(1, activation="linear", name='dense_out')(z)
 
 # our model will accept the inputs of the two branches and
@@ -107,20 +109,23 @@ def predictions(Tickers):
         s = Bull_twok(Real_val,Pred_val)
         s1 = buy_hold(Real_val, Pred_val)
         s2 = strategy_two(Real_val,Pred_val)
+        s3 = new_strategy(Real_val,Pred_val)
 
-        temp_dict = {"Rolling":s,"buy_hold":s1,"Reinvest":s2}
+        temp_dict = {"Rolling":s,"buy_hold":s1,"Reinvest":s2,"New_strategy":s3}
         re_invest.append(s2)
         by_hold.append(s1)
         Rolling.append(s)
+        New_strategy.append(s3)
 
         final_dict[a]=temp_dict
 
         df1 = pd.DataFrame(list(zip(Tickers,by_hold)),columns=["Tickers", "amount"])
         df2 = pd.DataFrame(list(zip(Tickers,Rolling)), columns=["Tickers", "amount"])
         df3 = pd.DataFrame(list(zip(Tickers, re_invest)), columns=["Tickers", "amount"])
+        df4 = pd.DataFrame(list(zip(Tickers, New_strategy)), columns=["Tickers", "amount"])
 
 
-    return df1,df2,df3, accuracy#s , s1 , s2, accuracy, Real_val, Pred_val#df1,df2,df3, accuracy
+    return df1,df2,df3, df4                 #df4# accuracy, Real_val, Pred_val#s , s1 , s2, accuracy, Real_val, Pred_val#df1,df2,df3, accuracy
 
 
 
