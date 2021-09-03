@@ -6,8 +6,8 @@ from tensorflow.keras.layers import Dense, Dropout, LSTM, Input, Activation, con
 from tensorflow.keras import optimizers
 import numpy as np
 np.random.seed(4)
-# from tensorflow import set_random_seed
-# set_random_seed(4)
+from tensorflow.python.framework.random_seed import set_random_seed
+set_random_seed(4)
 from util import csv_to_dataset, history_points, Bull_twok, buy_hold, strategy_two
 
 
@@ -120,7 +120,7 @@ def predictions(Tickers):
         df3 = pd.DataFrame(list(zip(Tickers, re_invest)), columns=["Tickers", "amount"])
 
 
-    return df1,df2,df3
+    return df1,df2,df3, accuracy#s , s1 , s2, accuracy, Real_val, Pred_val#df1,df2,df3, accuracy
 
 
 

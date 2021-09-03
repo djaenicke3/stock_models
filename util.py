@@ -171,10 +171,10 @@ def Bull_twok_csv(Real_val, Pred_val):
 
 
     df = pd.DataFrame(list(zip(Real_val[1:],Pred_val[1:],right_wrong,earning,end_profit)), columns=["Real_value","predicted_value","Predicted_price","money_gained_lost","Running_total"])
+    #df = pd.DataFrame(Real_val, Pred_val , right_wrong , earning, end_profit, columns= ["Real_value","predicted_value","Predicted_price","money_gained_lost","Running_total"])
 
 
-
-
+    print(df)
     return  df
 
 def strategy_two(Real_val, Pred_val):
