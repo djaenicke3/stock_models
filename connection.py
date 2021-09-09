@@ -10,6 +10,12 @@ logging.getLogger().setLevel(logging.DEBUG)
 requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
+import pymongo
+
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+
+mydb = myclient["Stock_Exchange"]
+get_col = mydb["Stock_Status"]# the collect
 
 # API KEYS
 #region
@@ -35,13 +41,26 @@ else:
 
 # Check how much money we can use to open new positions.
 print('${} is available as buying power.'.format(account.buying_power))
+k = get_col.find()
+for i in k:
 
-api.submit_order(
-    symbol='SPY',
-    qty=10,  # notional value of 1.5 shares of SPY at $300
-    side='buy',
-    type='market',
-    time_in_force='day',
-)
-#endregion
+    for j,l in i.items():
+        if l == "BUY":
+            print(1)
+
+            # api.submit_order(
+            #     symbol=str(j),
+            #     qty=1,  # notional value of 1.5 shares of SPY at $300
+            #     side='buy',
+            #     type='market',
+            #     time_in_force='day',
+            # )
+# #endregion
 #Buy a stock when a doji candle forms
+api.submit_order(
+                symbol="SPY",
+                qty=1,  # notional value of 1.5 shares of SPY at $300
+                side='buy',
+                type='market',
+                time_in_force='day',
+            )
