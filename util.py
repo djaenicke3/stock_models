@@ -28,8 +28,9 @@ def csv_to_dataset(company):
                                     data)
     response_json = response.json()
     data = pd.DataFrame.from_dict(response_json['Time Series (Daily)'], orient='index')
+    ace = data
     data = data.reset_index()
-    data = data[0:751]
+    data = data[0:501]
     data = data.iloc[::-1]
 
     data = data.drop('index', axis=1)
@@ -44,10 +45,12 @@ def csv_to_dataset(company):
     # data = data.reset_index()
 
     data = data.values
-    train_split = len(data) - int(len(data) / 10)
-    data = data[:train_split]
+
+    #data = data[:train_split]
+
 
     data_normaliser = preprocessing.MinMaxScaler()
+    data_norm = data_normaliser.fit(data)
     data_normalised = data_normaliser.fit_transform(data)
 
     # using the last {history_points} open close high low volume data points, predict the next open value
@@ -61,23 +64,15 @@ def csv_to_dataset(company):
     y_normaliser = preprocessing.MinMaxScaler()
     y_normaliser.fit(next_day_open_values)
 
-    def calc_ema(values, time_period):
-        # https://www.investopedia.com/ask/answers/122314/what-exponential-moving-average-ema-formula-and-how-ema-calculated.asp
-        sma = np.mean(values[:, 3])
-        ema_values = [sma]
-        k = 2 / (1 + time_period)
-        for i in range(len(his) - time_period, len(his)):
-            close = his[i][3]
-            ema_values.append(close * k + ema_values[-1] * (1 - k))
-        return ema_values[-1]
+
 
     technical_indicators = []
     for his in ohlcv_histories_normalised:
         # note since we are using his[3] we are taking the SMA of the closing price
         sma = np.mean(his[:, 3])
-        macd = calc_ema(his, 12) - calc_ema(his, 26)
+
         technical_indicators.append(np.array([sma]))
-        # technical_indicators.append(np.array([sma,macd,]))
+
 
     technical_indicators = np.array(technical_indicators)
 
