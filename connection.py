@@ -53,6 +53,18 @@ for i in k:
                 type='market',
                 time_in_force='day',
             )
+        else:
+            try:
+                api.submit_order(
+                    symbol=str(j),
+                    qty=1,  # notional value of 1.5 shares of SPY at $300
+                    side='sell',
+                    type='market',
+                    time_in_force='day',
+                )
+            except:
+                continue
+
 # #endregion
 #Buy a stock when a doji candle forms
 # api.submit_order(

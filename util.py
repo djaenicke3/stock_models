@@ -2,8 +2,8 @@ import pandas as pd
 from sklearn import preprocessing
 import numpy as np
 import requests
-API_URL = "https://www.alphavantage.co/query"
-apikey = "I92EXE4UX0377113"
+import pandas_datareader as web
+import datetime as dt
 
 
 
@@ -16,29 +16,23 @@ history_points = 50
 
 
 def csv_to_dataset(company):
-
-    data = {"function": "TIME_SERIES_DAILY_ADJUSTED",
-                    "symbol": company,
-                    "outputsize": "full",
-                    "datatype": "json",
-                    "apikey": apikey}
+    start = dt.datetime(2016, 1, 1)
+    end = dt.datetime.now()
 
 
-    response = requests.get(API_URL,
-                                    data)
-    response_json = response.json()
-    data = pd.DataFrame.from_dict(response_json['Time Series (Daily)'], orient='index')
-    ace = data
+
+    data = web.DataReader(company, 'yahoo', start, end)
     data = data.reset_index()
-    data = data[0:501]
-    data = data.iloc[::-1]
+    data = data.drop('Date', axis=1)
 
-    data = data.drop('index', axis=1)
-    data = data.drop('6. volume', axis=1)
-    data = data.drop('7. dividend amount', axis=1)
-    data = data.drop('8. split coefficient', axis=1)
+    data = data.drop('Volume', axis=1)
+
     data = data.drop(0, axis=0)
     data = data.apply(pd.to_numeric)
+    data = data[0:501]
+
+
+
 
 
     # data = pd.DataFrame.from_dict(response_json['Time Series (Daily)'], orient='index')
