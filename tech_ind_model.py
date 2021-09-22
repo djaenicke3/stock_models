@@ -125,7 +125,7 @@ def predictions(Tickers):
         df4 = pd.DataFrame(list(zip(Tickers, New_strategy)), columns=["Tickers", "amount"])
 
 
-    return df1,df2,df3, df4                 #df4# accuracy, Real_val, Pred_val#s , s1 , s2, accuracy, Real_val, Pred_val#df1,df2,df3, accuracy
+    return df1,df2,df3, df4,accuracy #df4# accuracy, Real_val, Pred_val#s , s1 , s2, accuracy, Real_val, Pred_val#df1,df2,df3, accuracy
 
 
 

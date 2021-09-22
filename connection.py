@@ -19,8 +19,8 @@ get_col = mydb["Stock_Status"]# the collect
 
 # API KEYS
 #region
-API_KEY = "PKKZHMSYPLHO70UORNID"
-API_SECRET = "wZijULSjPugbXcCzPmoHjxHOR8XUUMfsyHqIRljB"
+API_KEY = "PK07B8CUTKM9TZYKMPKL"
+API_SECRET = "O7qZBgrl10XFBVNmkq7aU3oxOOG7hmRV1LvjbgeB"
 APCA_API_BASE_URL = "https://paper-api.alpaca.markets"
 api = tradeapi.REST(API_KEY, API_SECRET, APCA_API_BASE_URL, api_version='v2')
 
@@ -45,16 +45,18 @@ k = get_col.find()
 for i in k:
 
     for j,l in i.items():
-        if l == "BUY":
-            api.submit_order(
-                symbol=str(j),
-                qty=1,  # notional value of 1.5 shares of SPY at $300
-                side='buy',
-                type='market',
-                time_in_force='day',
+
+        try:
+            if l[0] == "BUY":
+                api.submit_order(
+            symbol=str(j),
+            qty=1,  # notional value of 1.5 shares of SPY at $300
+            side='buy',
+            type='market',
+            time_in_force='day',
             )
-        else:
-            try:
+                print("buyied")
+            else:
                 api.submit_order(
                     symbol=str(j),
                     qty=1,  # notional value of 1.5 shares of SPY at $300
@@ -62,15 +64,8 @@ for i in k:
                     type='market',
                     time_in_force='day',
                 )
-            except:
-                continue
+                print("sell")
 
-# #endregion
-#Buy a stock when a doji candle forms
-# api.submit_order(
-#                 symbol="SPY",
-#                 qty=1,  # notional value of 1.5 shares of SPY at $300
-#                 side='buy',
-#                 type='market',
-#                 time_in_force='day',
-#             )
+
+        except:
+            continue

@@ -98,7 +98,7 @@ print(len(Tickers))
 
 predicted_for_tomorrow = []
 Tickers_predicted = []
-for i in Tickers:
+for i in Tickers[:10]:
     try:
         predicted_for_tomorrow.append(predictions([i]))
         Tickers_predicted.append(i)

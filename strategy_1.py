@@ -132,12 +132,12 @@ with open("sp500tickers.pickle", "rb") as f:
 return_dict = {}
 for tick in tickers[:]:
     try:
-        a,b = strategy_intra(tick[:-2],"15m")
+        a,b = strategy_intra(tick[:-2],"30m")
         time.sleep(1)
 
     except:
         continue
     return_dict[a] = b
 sorted_order = dict(sorted(return_dict.items(), key=lambda item: item[1] , reverse=True))
-data = pd.DataFrame(sorted_order.items(), columns=['Tickers', 'Pft_in_15m_int'])
-data.to_csv("profit in 35 days intraday trade using 15m interval ")
+data = pd.DataFrame(sorted_order.items(), columns=['Tickers', 'Pft_in_30m_int'])
+data.to_csv("profit in 35 days intraday trade using 30m interval ")
