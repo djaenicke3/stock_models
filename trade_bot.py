@@ -96,4 +96,4 @@ ls = Trade_bot()
 status,balance,profit =  ls.strategy_intra("EQ")
 f = open("EQ_stats.txt","a")
 text = "The current status  for EQ is {status} where as our current balance is {balance} and our profit is {profit}".format(status=status, balance=balance,profit=profit)
-
+f.write(text)
