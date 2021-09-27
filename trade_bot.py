@@ -1,12 +1,12 @@
 import numpy as np
-import yfinance as yf
+#import yfinance as yf
 import json
 import alpaca_trade_api as tradeapi
 import ta
 
 import pandas as pd
-ALPACA_API_KEY = "PK5Q2YVJJ38P4WRYKXMF"
-ALPACA_SECRET_KEY = "UVLNeh8enYEav7JZnani2wA8SLPWNWPxqaxhwczG"
+ALPACA_API_KEY = "PKBNQ0DZTMY8DOB7JPAL"
+ALPACA_SECRET_KEY = "HtXKpk7HcTPGW1Ct3NQijpaEGkd7xrOnPsinhvR8"
 base_url = 'https://paper-api.alpaca.markets'
 
 import logging
