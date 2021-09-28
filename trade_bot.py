@@ -75,7 +75,10 @@ class Trade_bot:
                 type='market',
                 time_in_force='gtc',
             )
-            return "Sell"
+            account = self.alpaca.get_account()
+            balance = float(account.equity)
+            profit = balance - float(account.last_equity)
+            return "Sell",balance,profit
         if df["Buy"].iloc[-1] == 1:
             self.alpaca.submit_order(
                 symbol=ticker,
@@ -84,7 +87,10 @@ class Trade_bot:
                 type='market',
                 time_in_force='gtc',
             )
-            return "Buy"
+            account = self.alpaca.get_account()
+            balance = float(account.equity)
+            profit = balance - float(account.last_equity)
+            return "Buy",balance,profit
         account = self.alpaca.get_account()
         balance = float(account.equity)
         profit = balance - float(account.last_equity)
