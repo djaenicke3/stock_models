@@ -27,7 +27,7 @@ class Trade_bot:
 
         df = pd.DataFrame()
 
-        for i in eq["EQ"]:
+        for i in eq[symbol]:
             a = str(i)
             a = a[4:-1]
             a = a.replace("'", '"')
@@ -109,6 +109,7 @@ for stock in lst_stocks:
         f = open(file_name, "a")
         f.write(text)
     if status == "Hold":
+        print("working but not traded")
         continue
 
 
