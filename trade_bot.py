@@ -46,7 +46,7 @@ class Trade_bot:
             dfx = dfx.append(mask, ignore_index=True)
         return dfx.sum(axis=0)
 
-    def strategy_intra(self,ticker, interval="5Min"):
+    def strategy_intra(self,ticker, interval="1Min"):
         df = self.get_df(ticker, interval)
         df["%K"] = ta.momentum.stoch(df.h, df.l, df.c, window=14, smooth_window=3)
         df['%D'] = df["%K"].rolling(3).mean()
@@ -78,7 +78,7 @@ class Trade_bot:
             return "Sell"
         if df["Buy"].iloc[-1] == 1:
             self.alpaca.submit_order(
-                symbol='EQ',
+                symbol=ticker,
                 qty=400,  # notional value of 1.5 shares of SPY at $300
                 side='buy',
                 type='market',
@@ -97,3 +97,20 @@ status,balance,profit =  ls.strategy_intra("EQ")
 f = open("EQ_stats.txt","a")
 text = "The current status  for EQ is {status} where as our current balance is {balance} and our profit is {profit}".format(status=status, balance=balance,profit=profit)
 f.write(text)
+
+
+lst_stocks = ["EQ","BBW","HA","M","FC","SE"]
+for stock in lst_stocks:
+    status, balance, profit = ls.strategy_intra(stock)
+    if status != "Hold":
+        file_name = "{stock}_stats.txt".format(stock=stock)
+        text = "The current status  for EQ is {status} where as our current balance is {balance} and our profit is {profit}".format(
+            status=status, balance=balance, profit=profit)
+        f = open(file_name, "a")
+        f.write(text)
+    if status == "Hold":
+        continue
+
+
+
+
