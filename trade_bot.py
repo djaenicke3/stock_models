@@ -5,8 +5,8 @@ import alpaca_trade_api as tradeapi
 import ta
 
 import pandas as pd
-ALPACA_API_KEY = "PKBNQ0DZTMY8DOB7JPAL"
-ALPACA_SECRET_KEY = "HtXKpk7HcTPGW1Ct3NQijpaEGkd7xrOnPsinhvR8"
+ALPACA_API_KEY = "PKTRHSF675P5F63Z30BE"
+ALPACA_SECRET_KEY = "oqux38a7VyDh3WDCnefxtMfhfjZJ8M7oPajPJAYg"
 base_url = 'https://paper-api.alpaca.markets'
 
 import logging
@@ -110,7 +110,7 @@ for stock in lst_stocks:
     status, balance, profit = ls.strategy_intra(stock)
     if status != "Hold":
         file_name = "{stock}_stats.txt".format(stock=stock)
-        text = "The current status  for EQ is {status} where as our current balance is {balance} and our profit is {profit}".format(
+        text = "The current status  for {stock} is {status} where as our current balance is {balance} and our profit is {profit}".format(stock=stock,
             status=status, balance=balance, profit=profit)
         f = open(file_name, "a")
         f.write(text)
