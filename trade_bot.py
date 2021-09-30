@@ -67,6 +67,9 @@ class Trade_bot:
         df["Sell"] = np.where((df.Buytrigger) &
                               (df["%K"].between(20, 80)) & (df["%D"].between(20, 80)) & (df.rsi < 50) &
                               (df.macd < 0), 1, 0)
+        limit_price = str(float(df["c"].iloc[-1]) * 1.02)  # take profit on 2 percent
+        stop_price = str(float(df["c"].iloc[-1]) * 0.95)
+        stop_loss = str(float(df["c"].iloc[-1]) * 0.945)
         if df["Sell"].iloc[-1] == 1:
             self.alpaca.submit_order(
                 symbol=ticker,
@@ -74,6 +77,12 @@ class Trade_bot:
                 side='sell',
                 type='market',
                 time_in_force='gtc',
+                order_class="bracket",
+                take_profit=dict(limit_price = limit_price,),
+                stop_loss=dict(
+                    stop_price = stop_price,
+                    limit_price = limit_price ,
+                )
             )
             account = self.alpaca.get_account()
             balance = float(account.equity)
@@ -86,6 +95,12 @@ class Trade_bot:
                 side='buy',
                 type='market',
                 time_in_force='gtc',
+                order_class="bracket",
+                take_profit=dict(limit_price = limit_price,),
+                stop_loss=dict(
+                    stop_price = stop_price,
+                    limit_price = limit_price ,
+                )
             )
             account = self.alpaca.get_account()
             balance = float(account.equity)
@@ -108,12 +123,12 @@ ls = Trade_bot()
 lst_stocks = ["EQ","BBW","HA","M","FC","SE","VOO"]
 for stock in lst_stocks:
     status, balance, profit = ls.strategy_intra(stock)
-    if status != "Hold":
-        file_name = "{stock}_stats.txt".format(stock=stock)
-        text = "The current status  for {stock} is {status} where as our current balance is {balance} and our profit is {profit}".format(stock=stock,
-            status=status, balance=balance, profit=profit)
-        f = open(file_name, "a")
-        f.write(text)
+
+    file_name = "{stock}_stats.txt".format(stock=stock)
+    text = "The current status  for {stock} is {status} where as our current balance is {balance} and our profit is {profit}".format(stock=stock,
+        status=status, balance=balance, profit=profit)
+    f = open(file_name, "a")
+    f.write(text)
     if status == "Hold":
         print("working but not traded")
         continue
