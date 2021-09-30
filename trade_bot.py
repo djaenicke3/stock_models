@@ -67,7 +67,7 @@ class Trade_bot:
         df["Sell"] = np.where((df.Buytrigger) &
                               (df["%K"].between(20, 80)) & (df["%D"].between(20, 80)) & (df.rsi < 50) &
                               (df.macd < 0), 1, 0)
-        limit_price = str(float(df["c"].iloc[-1]) * 1.02)  # take profit on 2 percent
+        limit_price = str(float(df["c"].iloc[-1]) * 1.01)  # take profit on 2 percent
         stop_price = str(float(df["c"].iloc[-1]) * 0.95)
         stop_loss = str(float(df["c"].iloc[-1]) * 0.945)
         if df["Sell"].iloc[-1] == 1:
