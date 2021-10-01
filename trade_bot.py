@@ -3,7 +3,7 @@ import numpy as np
 import json
 import alpaca_trade_api as tradeapi
 import ta
-
+import random
 import pandas as pd
 ALPACA_API_KEY = "PKTRHSF675P5F63Z30BE"
 ALPACA_SECRET_KEY = "oqux38a7VyDh3WDCnefxtMfhfjZJ8M7oPajPJAYg"
@@ -17,6 +17,9 @@ logging.getLogger().setLevel(logging.DEBUG)
 requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
+num = random.randint(1,5)
+f = open("working.txt","w")
+f.write("working " + str(num))
 
 class Trade_bot:
     def __init__(self):
