@@ -87,7 +87,7 @@ class Trade_bot:
                 qty=10,  # notional value of 1.5 shares of SPY at $300
                 side='sell',
                 type='market',
-                time_in_force='day',
+                time_in_force='gtc',
                 order_class="bracket",
                 take_profit=dict(limit_price = limit_price_sell,),
                 stop_loss=dict(
@@ -105,7 +105,7 @@ class Trade_bot:
                 qty=10,  # notional value of 1.5 shares of SPY at $300
                 side='buy',
                 type='market',
-                time_in_force='day',
+                time_in_force='gtc',
                 order_class="bracket",
                 take_profit=dict(limit_price = limit_price_buy,),
                 stop_loss=dict(
