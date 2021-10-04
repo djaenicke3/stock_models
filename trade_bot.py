@@ -18,7 +18,7 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 num = random.randint(1,5)
-f = open("working.txt","w")
+f = open("root/stock_models/working.txt","w")
 f.write("working " + str(num))
 
 class Trade_bot:
@@ -76,7 +76,7 @@ class Trade_bot:
         if df["Sell"].iloc[-1] == 1:
             self.alpaca.submit_order(
                 symbol=ticker,
-                qty=400,  # notional value of 1.5 shares of SPY at $300
+                qty=10,  # notional value of 1.5 shares of SPY at $300
                 side='sell',
                 type='market',
                 time_in_force='gtc',
@@ -94,7 +94,7 @@ class Trade_bot:
         if df["Buy"].iloc[-1] == 1:
             self.alpaca.submit_order(
                 symbol=ticker,
-                qty=400,  # notional value of 1.5 shares of SPY at $300
+                qty=10,  # notional value of 1.5 shares of SPY at $300
                 side='buy',
                 type='market',
                 time_in_force='gtc',
@@ -123,18 +123,18 @@ ls = Trade_bot()
 # f.write(text)
 
 
-lst_stocks = ["EQ","BBW","HA","M","FC","SE","VOO"]
+lst_stocks = ["EQ","BBW","HA","M","FC","SE","VOO","XPOF","OCUL","FITB","HPQ","AMC","GME"]
 for stock in lst_stocks:
     status, balance, profit = ls.strategy_intra(stock)
+    if status == "Hold":
+        continue
 
-    file_name = "{stock}_stats.txt".format(stock=stock)
+    file_name = "root/stock_models/{stock}_stats.txt".format(stock=stock)
     text = "The current status  for {stock} is {status} where as our current balance is {balance} and our profit is {profit}".format(stock=stock,
         status=status, balance=balance, profit=profit)
     f = open(file_name, "a")
     f.write(text)
-    if status == "Hold":
-        print("working but not traded")
-        continue
+
 
 
 
