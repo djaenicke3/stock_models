@@ -18,8 +18,8 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 num = random.randint(1,5)
-f = open("root/stock_models/working.txt","w")
-f.write("working " + str(num))
+# f = open("root/stock_models/working.txt","w")
+# f.write("working " + str(num))
 
 class Trade_bot:
     def __init__(self):
@@ -70,50 +70,58 @@ class Trade_bot:
         df["Sell"] = np.where((df.Buytrigger) &
                               (df["%K"].between(20, 80)) & (df["%D"].between(20, 80)) & (df.rsi < 50) &
                               (df.macd < 0), 1, 0)
-        limit_price = str(float(df["c"].iloc[-1]) * 1.01)  # take profit on 2 percent
-        stop_price = str(float(df["c"].iloc[-1]) * 0.95)
-        stop_loss = str(float(df["c"].iloc[-1]) * 0.945)
+        limit_price_buy = str(float(df["c"].iloc[-1]) * 1.05)  # take profit on 2 percent
+        stop_price_buy = str(float(df["c"].iloc[-1]) * 0.95)
+        stop_loss_buy = str(float(df["c"].iloc[-1]) * 0.945)
+        limit_price_sell = str(float(df["c"].iloc[-1]) * 0.945)
+        stop_price_sell = str(float(df["c"].iloc[-1]) * 1.045)
+        stop_loss_sell = str(float(df["c"].iloc[-1]) * 1.05)
+        rsi = df["rsi"].iloc[-1]
+        k_line = df["%K"].iloc[-1]
+        d_line = df["%D"].iloc[-1]
+
+
         if df["Sell"].iloc[-1] == 1:
             self.alpaca.submit_order(
                 symbol=ticker,
                 qty=10,  # notional value of 1.5 shares of SPY at $300
                 side='sell',
                 type='market',
-                time_in_force='gtc',
+                time_in_force='day',
                 order_class="bracket",
-                take_profit=dict(limit_price = limit_price,),
+                take_profit=dict(limit_price = limit_price_sell,),
                 stop_loss=dict(
-                    stop_price = stop_price,
-                    limit_price = limit_price ,
+                    stop_price = stop_price_sell,
+                    limit_price = stop_loss_sell ,
                 )
             )
             account = self.alpaca.get_account()
             balance = float(account.equity)
             profit = balance - float(account.last_equity)
-            return "Sell",balance,profit
+            return "Sell",balance,profit,rsi,k_line,d_line
         if df["Buy"].iloc[-1] == 1:
             self.alpaca.submit_order(
                 symbol=ticker,
                 qty=10,  # notional value of 1.5 shares of SPY at $300
                 side='buy',
                 type='market',
-                time_in_force='gtc',
+                time_in_force='day',
                 order_class="bracket",
-                take_profit=dict(limit_price = limit_price,),
+                take_profit=dict(limit_price = limit_price_buy,),
                 stop_loss=dict(
-                    stop_price = stop_price,
-                    limit_price = limit_price ,
+                    stop_price = stop_price_buy,
+                    limit_price = stop_loss_buy ,
                 )
             )
             account = self.alpaca.get_account()
             balance = float(account.equity)
             profit = balance - float(account.last_equity)
-            return "Buy",balance,profit
+            return "Buy",balance,profit,rsi,k_line,d_line
         account = self.alpaca.get_account()
         balance = float(account.equity)
         profit = balance - float(account.last_equity)
 
-        return "Hold" , balance ,profit
+        return "Hold" , balance ,profit,rsi,k_line,d_line
 
 
 ls = Trade_bot()
@@ -123,15 +131,15 @@ ls = Trade_bot()
 # f.write(text)
 
 
-lst_stocks = ["EQ","BBW","HA","M","FC","SE","VOO","XPOF","OCUL","FITB","HPQ","AMC","GME"]
+lst_stocks = ["BBW","HA","M","FC","SE","VOO","XPOF","OCUL","FITB","HPQ","AMC","GME"]
 for stock in lst_stocks:
-    status, balance, profit = ls.strategy_intra(stock)
+    status, balance, profit,rsi,kl,dl = ls.strategy_intra(stock)
     if status == "Hold":
         continue
 
-    file_name = "root/stock_models/{stock}_stats.txt".format(stock=stock)
-    text = "The current status  for {stock} is {status} where as our current balance is {balance} and our profit is {profit}".format(stock=stock,
-        status=status, balance=balance, profit=profit)
+    file_name = "stats.txt"
+    text = "{stock} status: {status} balance :{balance} profit:{profit} , rsi: {rsi} ,kline: {kl}, dline: {dl}.".format(stock=stock,
+        status=status, balance=balance, profit=profit,rsi=rsi,kl=kl,dl = dl)
     f = open(file_name, "a")
     f.write(text)
 
