@@ -75,7 +75,7 @@ class Trade_bot:
         stop_loss_buy = str(float(df["c"].iloc[-1]) * 0.994)
         limit_price_sell = str(float(df["c"].iloc[-1]) * 0.998)
         stop_price_sell = str(float(df["c"].iloc[-1]) * 1.004)
-        stop_loss_sell = str(float(df["c"].iloc[-1]) * 1.005)
+        stop_loss_sell = str(float(df["c"].iloc[-1]) * 1.005)#
         rsi = df["rsi"].iloc[-1]
         k_line = df["%K"].iloc[-1]
         d_line = df["%D"].iloc[-1]
