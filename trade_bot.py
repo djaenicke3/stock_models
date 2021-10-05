@@ -5,8 +5,8 @@ import alpaca_trade_api as tradeapi
 import ta
 import random
 import pandas as pd
-ALPACA_API_KEY = "PKTRHSF675P5F63Z30BE"
-ALPACA_SECRET_KEY = "oqux38a7VyDh3WDCnefxtMfhfjZJ8M7oPajPJAYg"
+ALPACA_API_KEY = "PKIA6EW2U4VEBXLOGBXJ"
+ALPACA_SECRET_KEY = "wbJCjYt7yhVgcZIjdsTXWGIJBKbv91RbzRQ7q6QG"
 base_url = 'https://paper-api.alpaca.markets'
 
 import logging
