@@ -70,12 +70,12 @@ class Trade_bot:
         df["Sell"] = np.where((df.Buytrigger) &
                               (df["%K"].between(20, 80)) & (df["%D"].between(20, 80)) & (df.rsi < 50) &
                               (df.macd < 0), 1, 0)
-        limit_price_buy = str(float(df["c"].iloc[-1]) * 1.05)  # take profit on 2 percent
-        stop_price_buy = str(float(df["c"].iloc[-1]) * 0.95)
-        stop_loss_buy = str(float(df["c"].iloc[-1]) * 0.945)
-        limit_price_sell = str(float(df["c"].iloc[-1]) * 0.945)
-        stop_price_sell = str(float(df["c"].iloc[-1]) * 1.045)
-        stop_loss_sell = str(float(df["c"].iloc[-1]) * 1.05)
+        limit_price_buy = str(float(df["c"].iloc[-1]) * 1.002)  # take profit on 2 percent
+        stop_price_buy = str(float(df["c"].iloc[-1]) * 0.996)
+        stop_loss_buy = str(float(df["c"].iloc[-1]) * 0.994)
+        limit_price_sell = str(float(df["c"].iloc[-1]) * 0.998)
+        stop_price_sell = str(float(df["c"].iloc[-1]) * 1.004)
+        stop_loss_sell = str(float(df["c"].iloc[-1]) * 1.005)
         rsi = df["rsi"].iloc[-1]
         k_line = df["%K"].iloc[-1]
         d_line = df["%D"].iloc[-1]
@@ -131,7 +131,7 @@ ls = Trade_bot()
 # f.write(text)
 
 
-lst_stocks = ["BBW","HA","M","FC","SE","VOO","XPOF","OCUL","FITB","HPQ","AMC","GME"]
+lst_stocks = ["EQ","BBW","HA","M","FC","SE","VOO","XPOF","OCUL","FITB","HPQ","AMC","GME"]
 for stock in lst_stocks:
     status, balance, profit,rsi,kl,dl = ls.strategy_intra(stock)
     if status == "Hold":
